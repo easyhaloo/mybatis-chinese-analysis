@@ -26,7 +26,7 @@ import org.apache.ibatis.reflection.invoker.Invoker;
 import org.apache.ibatis.reflection.invoker.MethodInvoker;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
-/**
+/** 元数据类 用于获取实体类中的属性名称，属性类型等信息
  * @author Clinton Begin
  */
 public class MetaClass {
@@ -131,6 +131,7 @@ public class MetaClass {
     return null;
   }
 
+  //采用迭代器的方式寻找 setter,getter是否存在 person.student.name
   public boolean hasSetter(String name) {
     PropertyTokenizer prop = new PropertyTokenizer(name);
     if (prop.hasNext()) {

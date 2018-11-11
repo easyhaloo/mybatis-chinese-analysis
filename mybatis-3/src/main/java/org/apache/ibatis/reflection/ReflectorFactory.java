@@ -17,6 +17,7 @@ package org.apache.ibatis.reflection;
 
 /**
  * 反射工具工厂类
+ *   利用缓存的方式来生成反射器，提高性能
  */
 public interface ReflectorFactory {
   //是否开启Class缓存，开启缓存后，调用findForClass方法，会直接从缓存中获取。
