@@ -22,6 +22,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import org.apache.ibatis.cache.Cache;
 
 /**
+ *  先进先出缓存装饰器，对于进入的缓存，采取先进先出的销毁策略。
  * FIFO (first in, first out) cache decorator
  *
  * @author Clinton Begin

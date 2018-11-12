@@ -23,7 +23,7 @@ import org.apache.ibatis.cache.Cache;
 
 /**
  * Lru (least recently used) cache decorator
- *
+ * 基于LRU算法的缓存实现，内部实现是LinkedHashMap(双向链表+Map)
  * @author Clinton Begin
  */
 public class LruCache implements Cache {

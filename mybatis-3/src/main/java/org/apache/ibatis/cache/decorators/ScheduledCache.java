@@ -20,6 +20,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import org.apache.ibatis.cache.Cache;
 
 /**
+ *  定时器缓存，定时刷新缓存，默认1小时刷新一次
  * @author Clinton Begin
  */
 public class ScheduledCache implements Cache {

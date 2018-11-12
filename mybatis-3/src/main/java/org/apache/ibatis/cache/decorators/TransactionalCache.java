@@ -26,10 +26,16 @@ import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
 
 /**
+ * 二级缓存的事务缓冲区
+ *
  * The 2nd level cache transactional buffer.
- * 
+ *
+ * 在一次会话期间，该类会将持有的所有缓存条目添加早这个二级缓存中。
+ * 调用commit时会将条目发送到缓存，如果回滚会话，则会将条目丢弃。
+ * 阻塞缓存也被支持。因此，任何返回高速缓存未命中的get（）都将跟随put（），因此可以释放与该键关联的任何锁。
+ *
  * This class holds all cache entries that are to be added to the 2nd level cache during a Session.
- * Entries are sent to the cache when commit is called or discarded if the Session is rolled back. 
+ * Entries are sent to the cache when commit is called or discarded if the Session is rolled back.
  * Blocking cache support has been added. Therefore any get() that returns a cache miss 
  * will be followed by a put() so any lock associated with the key can be released. 
  * 
@@ -41,8 +47,11 @@ public class TransactionalCache implements Cache {
   private static final Log log = LogFactory.getLog(TransactionalCache.class);
 
   private final Cache delegate;
+  //是否提交时清除缓存
   private boolean clearOnCommit;
+  //记录所有需要提交的条目
   private final Map<Object, Object> entriesToAddOnCommit;
+  //记录不存在缓存中的条目（Key）
   private final Set<Object> entriesMissedInCache;
 
   public TransactionalCache(Cache delegate) {
