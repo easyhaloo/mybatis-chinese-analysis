@@ -467,6 +467,7 @@ public class Reflector {
     }
 
     /**
+     * 检查类是否具有名称的可读属性，即是否含有可以读取的setter方法
      * Check to see if a class has a writable property by name
      *
      * @param propertyName - the name of the property to check
@@ -477,6 +478,7 @@ public class Reflector {
     }
 
     /**
+     *  检查类是否具有名称的可读属性，即是否含有可以读取的getter方法
      * Check to see if a class has a readable property by name
      *
      * @param propertyName - the name of the property to check

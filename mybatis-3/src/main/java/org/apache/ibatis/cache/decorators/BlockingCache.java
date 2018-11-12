@@ -25,6 +25,9 @@ import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.cache.CacheException;
 
 /**
+ *
+ *  简单的阻塞装饰器，通过代理Cache的实现，来实现同步加锁，锁缓存处理。
+ *
  * Simple blocking decorator 
  * 
  * Simple and inefficient version of EhCache's BlockingCache decorator.

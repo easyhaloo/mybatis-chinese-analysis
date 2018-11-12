@@ -25,6 +25,7 @@ import org.apache.ibatis.reflection.factory.ObjectFactory;
 import org.apache.ibatis.reflection.property.PropertyTokenizer;
 
 /**
+ *  Map包装器
  * @author Clinton Begin
  */
 public class MapWrapper extends BaseWrapper {

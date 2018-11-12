@@ -16,6 +16,9 @@
 package org.apache.ibatis.session;
 
 /**
+ * 结果类型处理器，针对返回的每一行结果
+ *
+ *
  * @author Clinton Begin
  */
 public interface ResultHandler<T> {
