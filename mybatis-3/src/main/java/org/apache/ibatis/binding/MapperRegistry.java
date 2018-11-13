@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
+ *  mapper接口注册器，负责注册所有的mapper接口
  * @author Clinton Begin
  * @author Eduardo Macarron
  * @author Lasse Voss
@@ -34,6 +35,7 @@ import java.util.Set;
 public class MapperRegistry {
 
   private final Configuration config;
+  // 使用Map来缓存注册的mapper接口
   private final Map<Class<?>, MapperProxyFactory<?>> knownMappers = new HashMap<>();
 
   public MapperRegistry(Configuration config) {
