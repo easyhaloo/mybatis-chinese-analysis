@@ -19,6 +19,11 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 /**
+ * 数据源工厂类，Mybatis中默认存在三个实现
+ *  - JndiDataSourceFactory
+ *  - UnpooledDataSourceFactory
+ *    - PooledDataSourceFactory
+ *
  * @author Clinton Begin
  */
 public interface DataSourceFactory {
