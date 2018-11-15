@@ -356,6 +356,14 @@ public class PooledDataSource implements DataSource {
         return ("" + url + username + password).hashCode();
     }
 
+    /**
+     * 将连接放回连接池中，对于放回的连接，需要从活动状态队列中移除，然后添加到空闲队列。
+     * 还需要对TypeCode进行检测，确保是从同一个地址获取的连接
+     * 将连接的状态变为不可用
+     *
+     * @param conn
+     * @throws SQLException
+     */
     protected void pushConnection(PooledConnection conn) throws SQLException {
 
         synchronized (state) {
@@ -363,9 +371,11 @@ public class PooledDataSource implements DataSource {
             if (conn.isValid()) {
                 if (state.idleConnections.size() < poolMaximumIdleConnections && conn.getConnectionTypeCode() == expectedConnectionTypeCode) {
                     state.accumulatedCheckoutTime += conn.getCheckoutTime();
+                    // 如果不是自动提交，那么需要先回滚，防止连接中存在待提交事务
                     if (!conn.getRealConnection().getAutoCommit()) {
                         conn.getRealConnection().rollback();
                     }
+                    // 对已有连接重新包装
                     PooledConnection newConn = new PooledConnection(conn.getRealConnection(), this);
                     state.idleConnections.add(newConn);
                     newConn.setCreatedTimestamp(conn.getCreatedTimestamp());
@@ -395,6 +405,13 @@ public class PooledDataSource implements DataSource {
         }
     }
 
+    /**
+     * 获取数据库连接
+     * @param username
+     * @param password
+     * @return
+     * @throws SQLException
+     */
     private PooledConnection popConnection(String username, String password) throws SQLException {
         boolean countedWait = false;
         PooledConnection conn = null;
@@ -403,6 +420,7 @@ public class PooledDataSource implements DataSource {
 
         while (conn == null) {
             synchronized (state) {
+                // 空闲队列不为空，则先从空闲队列获取连接，从头部开始获取
                 if (!state.idleConnections.isEmpty()) {
                     // Pool has available connection
                     conn = state.idleConnections.remove(0);
@@ -410,6 +428,7 @@ public class PooledDataSource implements DataSource {
                         log.debug("Checked out connection " + conn.getRealHashCode() + " from pool.");
                     }
                 } else {
+                    // 如果空闲队列为空且活动队列未满，则需要重新创建新的连接
                     // Pool does not have available connection
                     if (state.activeConnections.size() < poolMaximumActiveConnections) {
                         // Can create new connection
@@ -418,6 +437,8 @@ public class PooledDataSource implements DataSource {
                             log.debug("Created connection " + conn.getRealHashCode() + ".");
                         }
                     } else {
+                        // 活动队列满载，则取出头部的过期的活动连接，回滚事务
+                        // 即CheckoutTime 超过poolMaximumCheckoutTime 规定的时间，则认为连接过期
                         // Cannot create new connection
                         PooledConnection oldestActiveConnection = state.activeConnections.get(0);
                         long longestCheckoutTime = oldestActiveConnection.getCheckoutTime();
@@ -510,7 +531,7 @@ public class PooledDataSource implements DataSource {
     }
 
     /**
-     *  检查一个连接是否仍然可用
+     * 检查一个连接是否仍然可用
      * Method to check to see if a connection is still usable
      *
      * @param conn - the connection to check
@@ -565,7 +586,7 @@ public class PooledDataSource implements DataSource {
     }
 
     /**
-     *  从代理连接中分离出真正的连接
+     * 从代理连接中分离出真正的连接
      * Unwraps a pooled connection to get to the 'real' connection
      *
      * @param conn - the pooled connection to unwrap

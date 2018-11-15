@@ -135,6 +135,11 @@ public class DefaultSqlSessionFactory implements SqlSessionFactory {
         }
     }
 
+    /**
+     *  通过环境变量来获取事务工厂
+     * @param environment
+     * @return
+     */
     private TransactionFactory getTransactionFactoryFromEnvironment(Environment environment) {
         if (environment == null || environment.getTransactionFactory() == null) {
             return new ManagedTransactionFactory();
