@@ -19,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
+ *  一个参数处理器，用于为PreparedStatement设置参数
  * A parameter handler sets the parameters of the {@code PreparedStatement}
  *
  * @author Clinton Begin

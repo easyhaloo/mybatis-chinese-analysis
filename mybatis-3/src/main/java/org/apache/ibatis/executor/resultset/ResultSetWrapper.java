@@ -158,6 +158,15 @@ public class ResultSetWrapper {
         return null;
     }
 
+    /**
+     * 将resultMap中的属性值 与读取数据库中的属性值进行联系
+     * 对于resultMap中存在的属性放入mappedColumnNamesMap
+     * 对于不存在的放在unMappedColumnNamesMap中
+     *
+     * @param resultMap
+     * @param columnPrefix
+     * @throws SQLException
+     */
     private void loadMappedAndUnmappedColumnNames(ResultMap resultMap, String columnPrefix) throws SQLException {
         List<String> mappedColumnNames = new ArrayList<>();
         List<String> unmappedColumnNames = new ArrayList<>();
@@ -175,6 +184,14 @@ public class ResultSetWrapper {
         unMappedColumnNamesMap.put(getMapKey(resultMap, columnPrefix), unmappedColumnNames);
     }
 
+    /**
+     * 获取映射的列集合
+     *
+     * @param resultMap
+     * @param columnPrefix
+     * @return
+     * @throws SQLException
+     */
     public List<String> getMappedColumnNames(ResultMap resultMap, String columnPrefix) throws SQLException {
         List<String> mappedColumnNames = mappedColumnNamesMap.get(getMapKey(resultMap, columnPrefix));
         if (mappedColumnNames == null) {
@@ -184,6 +201,14 @@ public class ResultSetWrapper {
         return mappedColumnNames;
     }
 
+    /**
+     * 获取非映射的列集合
+     *
+     * @param resultMap
+     * @param columnPrefix
+     * @return
+     * @throws SQLException
+     */
     public List<String> getUnmappedColumnNames(ResultMap resultMap, String columnPrefix) throws SQLException {
         List<String> unMappedColumnNames = unMappedColumnNamesMap.get(getMapKey(resultMap, columnPrefix));
         if (unMappedColumnNames == null) {
@@ -193,10 +218,24 @@ public class ResultSetWrapper {
         return unMappedColumnNames;
     }
 
+    /**
+     * 获取集合Key,以mapper.xml文件中的resultMap.id + 列前缀组合成唯一key
+     *
+     * @param resultMap
+     * @param columnPrefix
+     * @return
+     */
     private String getMapKey(ResultMap resultMap, String columnPrefix) {
         return resultMap.getId() + ":" + columnPrefix;
     }
 
+    /**
+     * 为列名追加前缀
+     *
+     * @param columnNames 列名集合
+     * @param prefix      前缀
+     * @return
+     */
     private Set<String> prependPrefixes(Set<String> columnNames, String prefix) {
         if (columnNames == null || columnNames.isEmpty() || prefix == null || prefix.length() == 0) {
             return columnNames;

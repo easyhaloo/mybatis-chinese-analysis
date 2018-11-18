@@ -167,6 +167,7 @@ public class DefaultCursor<T> implements Cursor<T> {
         if (next != null) {
             indexWithRowBound++;
         }
+        // 没有更多对象或者消费达到了极限，则将游标状态置为CONSUMED状态
         // No more object or limit reached
         if (next == null || getReadItemsCount() == rowBounds.getOffset() + rowBounds.getLimit()) {
             close();

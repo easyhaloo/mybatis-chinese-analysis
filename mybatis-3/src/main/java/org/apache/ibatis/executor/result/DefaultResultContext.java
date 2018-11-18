@@ -18,11 +18,14 @@ package org.apache.ibatis.executor.result;
 import org.apache.ibatis.session.ResultContext;
 
 /**
+ *  默认的结果上下文对象
  * @author Clinton Begin
  */
 public class DefaultResultContext<T> implements ResultContext<T> {
 
+  // 结果对象
   private T resultObject;
+  // 当前结果所在的行
   private int resultCount;
   private boolean stopped;
 
