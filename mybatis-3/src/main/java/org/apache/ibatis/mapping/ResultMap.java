@@ -43,10 +43,13 @@ public class ResultMap {
     private String id;
     // 结果集类型 对应的是映射实体类
     private Class<?> type;
-    //
+
     private List<ResultMapping> resultMappings;
+    //id映射集合
     private List<ResultMapping> idResultMappings;
+    // 构造器映射集合，代表的不是单一属性，然后嵌套对象
     private List<ResultMapping> constructorResultMappings;
+    // 属性映射集合
     private List<ResultMapping> propertyResultMappings;
     //  映射的列（数据量column）
     private Set<String> mappedColumns;
@@ -99,8 +102,10 @@ public class ResultMap {
             resultMap.idResultMappings = new ArrayList<>();
             resultMap.constructorResultMappings = new ArrayList<>();
             resultMap.propertyResultMappings = new ArrayList<>();
+            // 构造器参数，主要是传递给内部嵌套的SQL作为查询关键字使用
             final List<String> constructorArgNames = new ArrayList<>();
             for (ResultMapping resultMapping : resultMap.resultMappings) {
+                // 属否存在嵌套查询 有hasNestedQueries与NestedQueryId()共同决定，NestedQueryId()指代的是resultMap标签中的<association></association>，<collection></collection>标签等。
                 resultMap.hasNestedQueries = resultMap.hasNestedQueries || resultMapping.getNestedQueryId() != null;
                 resultMap.hasNestedResultMaps = resultMap.hasNestedResultMaps || (resultMapping.getNestedResultMapId() != null && resultMapping.getResultSet() == null);
                 final String column = resultMapping.getColumn();
@@ -156,6 +161,12 @@ public class ResultMap {
             return resultMap;
         }
 
+        /**
+         * 根据给定构造器参数名称 从映射的JAVA对象中提取到匹配的构造器
+         *
+         * @param constructorArgNames
+         * @return
+         */
         private List<String> argNamesOfMatchingConstructor(List<String> constructorArgNames) {
             Constructor<?>[] constructors = resultMap.type.getDeclaredConstructors();
             for (Constructor<?> constructor : constructors) {
@@ -171,6 +182,14 @@ public class ResultMap {
             return null;
         }
 
+        /**
+         * 检验构造器是否与加入到constructorResultMappings中的匹配
+         *
+         * @param constructorArgNames
+         * @param paramTypes
+         * @param paramNames
+         * @return
+         */
         private boolean argTypesMatch(final List<String> constructorArgNames,
                                       Class<?>[] paramTypes, List<String> paramNames) {
             for (int i = 0; i < constructorArgNames.size(); i++) {
@@ -190,6 +209,12 @@ public class ResultMap {
             return true;
         }
 
+        /**
+         * 获取真正的形参名称
+         *
+         * @param constructor
+         * @return
+         */
         private List<String> getArgNames(Constructor<?> constructor) {
             List<String> paramNames = new ArrayList<>();
             List<String> actualParamNames = null;

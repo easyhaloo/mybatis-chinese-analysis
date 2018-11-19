@@ -54,7 +54,7 @@ public class ResultMapping {
     private String columnPrefix;
     //
     private List<ResultFlag> flags;
-    // 复合映射类型
+    // 复合映射类型，指代resultMap中嵌套着resultMap
     private List<ResultMapping> composites;
     //
     private String resultSet;
