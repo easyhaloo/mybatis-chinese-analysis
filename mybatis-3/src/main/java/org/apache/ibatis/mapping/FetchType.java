@@ -16,8 +16,10 @@
 package org.apache.ibatis.mapping;
 
 /**
+ *  加载结果集的类型
  * @author Eduardo Macarron
  */
 public enum FetchType {
+  // 懒加载，饥饿加载，默认加载
   LAZY, EAGER, DEFAULT
 }

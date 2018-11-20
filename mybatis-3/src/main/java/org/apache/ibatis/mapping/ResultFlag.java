@@ -20,8 +20,9 @@ package org.apache.ibatis.mapping;
  * @author Clinton Begin
  */
 public enum ResultFlag {
-    // id  主键
-    // CONSTRUCTOR 对应的是结果集中嵌套的对象
-
+    // id   一个 ID 结果;标记出作为 ID 的结果可以帮助提高整体性能
+    // CONSTRUCTOR 用于在实例化类时，注入结果到构造方法中
+    // idArg - ID 参数;标记出作为 ID 的结果可以帮助提高整体性能
+    //  arg - 将被注入到构造方法的一个普通结果
     ID, CONSTRUCTOR
 }

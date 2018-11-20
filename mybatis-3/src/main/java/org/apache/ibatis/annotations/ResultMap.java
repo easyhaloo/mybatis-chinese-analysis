@@ -22,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ *  注解方式的resultMap 等同于xml的<resultMap></resultMap>标签
  * @author Jeff Butler
  */
 @Documented

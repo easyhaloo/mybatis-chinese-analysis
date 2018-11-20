@@ -22,6 +22,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ *
+ *  用于类型处理器的类注解，可以指定与其关联的JDBC类型列表
+ *   如果在 jdbcType 属性中也同时指定，则注解方式将被忽略。
  * @author Eduardo Macarron
  */
 @Documented

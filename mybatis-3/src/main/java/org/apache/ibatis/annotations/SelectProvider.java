@@ -22,6 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ *  用来指定type类型的method方法名来指向对应的SQL语句
  * @author Clinton Begin
  */
 @Documented

@@ -55,28 +55,30 @@ public final class MappedStatement {
     private ParameterMap parameterMap;
     //结果集对象，封装List，意味着将返回多条记录行
     private List<ResultMap> resultMaps;
-    // 是否刷新缓存
+    // 是否刷新缓存,每次执行SQL语句都会导致本地缓存和二级缓存都会被清空，默认值：false。
     private boolean flushCacheRequired;
-    // 是否使用缓存
+    // 是否使用缓存，将会导致本条语句的结果被二级缓存，默认值：对 select 元素为 true。
     private boolean useCache;
-    // 结果集排序，用游标操作，适用于大数据集
+    // 这个设置仅针对嵌套结果 select 语句适用：如果为 true，就是假设包含了嵌套结果集或是分组了，这样的话当返回一个主结果行的时候，就不会发生有对前面结果集的引用的情况。
+    // 这就使得在获取嵌套的结果集的时候不至于导致内存不够用。默认值：false。
     private boolean resultOrdered;
     // sql操作命令
     private SqlCommandType sqlCommandType;
     // 主键类型，方便Insert操作时，到底是使用自增主键还是自定义主键
     private KeyGenerator keyGenerator;
-    //
+    //selectKey 语句结果应该被设置的目标属性。如果希望得到多个生成的列，也可以是逗号分隔的属性名称列表。
     private String[] keyProperties;
+    //匹配属性的返回结果集中的列名称。如果希望得到多个生成的列，也可以是逗号分隔的属性名称列表。
     private String[] keyColumns;
     // 是否存在嵌套的结果集
     private boolean hasNestedResultMaps;
-    // 数据源
+    // 数据源厂商提供的名称，如果配置了 databaseIdProvider，MyBatis 会加载所有的不带 databaseId 或匹配当前 databaseId 的语句；如果带或者不带的语句都有，则不带的会被忽略。
     private String databaseId;
     // 执行SQL的日志
     private Log statementLog;
-    // 解析XML中的动态SQL，将实际参数传递给SQL编译成预编译模式的SQL
+    // 解析XML中的动态SQL，将实际参数传递给SQL编译成预编译模式的SQL,可以自定义解析过程，须实现LanguageDriver接口
     private LanguageDriver lang;
-
+    //这个设置仅对多结果集的情况适用，它将列出语句执行后返回的结果集并每个结果集给一个名称，名称是逗号分隔的。
     private String[] resultSets;
 
     MappedStatement() {
@@ -315,6 +317,11 @@ public final class MappedStatement {
         return resultSets;
     }
 
+    /**
+     * 获取BoundSql 这个对象，该对象中存在预处理的SQL语句，以及要执行的SQL参数
+     * @param parameterObject
+     * @return
+     */
     public BoundSql getBoundSql(Object parameterObject) {
         BoundSql boundSql = sqlSource.getBoundSql(parameterObject);
         List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
@@ -322,6 +329,7 @@ public final class MappedStatement {
             boundSql = new BoundSql(configuration, boundSql.getSql(), parameterMap.getParameterMappings(), parameterObject);
         }
 
+        // 检查参数映射中的嵌套结果映射
         // check for nested result maps in parameter mappings (issue #30)
         for (ParameterMapping pm : boundSql.getParameterMappings()) {
             String rmId = pm.getResultMapId();

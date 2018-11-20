@@ -24,6 +24,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ *  可以指定LanguageDriver的实现类，LanguageDriver接口主要提供给用户自定义解析XML
  * @author Clinton Begin
  */
 @Documented

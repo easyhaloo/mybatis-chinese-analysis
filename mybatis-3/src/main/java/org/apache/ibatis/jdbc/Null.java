@@ -38,6 +38,7 @@ import org.apache.ibatis.type.TimeOnlyTypeHandler;
 import org.apache.ibatis.type.TypeHandler;
 
 /**
+ *  将类型处理器与JdbcType进行关联
  * @author Clinton Begin
  * @author Adam Gent
  */
