@@ -106,7 +106,7 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     // multiple resultsets
     // 针对多个resultset并列
     private final Map<String, ResultMapping> nextResultMaps = new HashMap<>();
-    //
+    // 待关联关系映射集合
     private final Map<CacheKey, List<PendingRelation>> pendingRelations = new HashMap<>();
 
     // Cached Automappings
@@ -157,6 +157,11 @@ public class DefaultResultSetHandler implements ResultSetHandler {
     // HANDLE OUTPUT PARAMETER
     //
 
+    /**
+     *  处理的是存储过程
+     * @param cs
+     * @throws SQLException
+     */
     @Override
     public void handleOutputParameters(CallableStatement cs) throws SQLException {
         final Object parameterObject = parameterHandler.getParameterObject();
@@ -180,9 +185,14 @@ public class DefaultResultSetHandler implements ResultSetHandler {
             return;
         }
         try {
+            // 通过参数映射对象获取，resultMap的ID
             final String resultMapId = parameterMapping.getResultMapId();
+            // 然后通过resultMapId 来获取ResultMap
             final ResultMap resultMap = configuration.getResultMap(resultMapId);
+            // 将结果集对象包装成ResultSetWrapper
             final ResultSetWrapper rsw = new ResultSetWrapper(rs, configuration);
+            // 如果存在结果集处理对象，使用resultHandler,如果不存在则使用默认的DefaultResultHandler，
+            // DefaultResultHandler在构造函数中使用对象工厂创建一个List对象
             if (this.resultHandler == null) {
                 final DefaultResultHandler resultHandler = new DefaultResultHandler(objectFactory);
                 handleRowValues(rsw, resultMap, resultHandler, new RowBounds(), null);
@@ -292,6 +302,10 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         return null;
     }
 
+    /**
+     * 关闭结果集
+     * @param rs
+     */
     private void closeResultSet(ResultSet rs) {
         try {
             if (rs != null) {
@@ -302,6 +316,9 @@ public class DefaultResultSetHandler implements ResultSetHandler {
         }
     }
 
+    /**
+     * 处理完嵌套结果集
+     */
     private void cleanUpAfterHandlingResultSet() {
         nestedResultObjects.clear();
     }

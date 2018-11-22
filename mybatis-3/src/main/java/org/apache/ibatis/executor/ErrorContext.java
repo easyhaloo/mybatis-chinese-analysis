@@ -24,12 +24,19 @@ public class ErrorContext {
     private static final String LINE_SEPARATOR = System.getProperty("line.separator", "\n");
     private static final ThreadLocal<ErrorContext> LOCAL = new ThreadLocal<>();
 
+    // 存储对象
     private ErrorContext stored;
+    // 资源路径
     private String resource;
+    // 操作类型
     private String activity;
+    // 一般存储执行SQL的方法标识
     private String object;
+    // 执行信息
     private String message;
+    // 执行SQL
     private String sql;
+    //异常对象
     private Throwable cause;
 
     private ErrorContext() {
