@@ -100,6 +100,10 @@ public class CacheBuilder {
         return this;
     }
 
+    /**
+     * 构建Cache，给Cache添加装饰器
+     * @return
+     */
     public Cache build() {
         setDefaultImplementations();
         Cache cache = newBaseCacheInstance(implementation, id);
