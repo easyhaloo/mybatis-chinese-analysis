@@ -27,7 +27,7 @@ import org.apache.ibatis.reflection.ExceptionUtil;
 import org.apache.ibatis.session.SqlSession;
 
 /**
- * mapper接口的代理类，使用的是JDK动态代理，来对Mapper接口生成代理对象
+ * mapper接口的代理执行类，使用的是JDK动态代理，来对Mapper接口生成代理对象
  *
  * @author Clinton Begin
  * @author Eduardo Macarron

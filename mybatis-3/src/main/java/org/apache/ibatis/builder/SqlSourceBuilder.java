@@ -29,7 +29,7 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.type.JdbcType;
 
 /**
- * Sql构建器
+ * Sql构建器，用于构建静态SQL
  *
  * @author Clinton Begin
  */
@@ -45,15 +45,20 @@ public class SqlSourceBuilder extends BaseBuilder {
     // 解析SQL
     public SqlSource parse(String originalSql, Class<?> parameterType, Map<String, Object> additionalParameters) {
         ParameterMappingTokenHandler handler = new ParameterMappingTokenHandler(configuration, parameterType, additionalParameters);
+
+        // #{}解析这个表达式，使用ParameterMappingTokenHandler来处理参数变量
         GenericTokenParser parser = new GenericTokenParser("#{", "}", handler);
         String sql = parser.parse(originalSql);
+        // 构建静态SQL
         return new StaticSqlSource(configuration, sql, handler.getParameterMappings());
     }
 
     private static class ParameterMappingTokenHandler extends BaseBuilder implements TokenHandler {
-
+        // 参数映射器集合
         private List<ParameterMapping> parameterMappings = new ArrayList<>();
+        // 参数类型，表示一个对象
         private Class<?> parameterType;
+        // 元数据类，包装参数对象，方便反射调用
         private MetaObject metaParameters;
 
         public ParameterMappingTokenHandler(Configuration configuration, Class<?> parameterType, Map<String, Object> additionalParameters) {
@@ -72,6 +77,7 @@ public class SqlSourceBuilder extends BaseBuilder {
             return "?";
         }
 
+        // 构建ParameterMapping   #{param1,javaType=xxx,jdbcType=xxx,typeHandler="xxx"}
         private ParameterMapping buildParameterMapping(String content) {
             Map<String, String> propertiesMap = parseParameterMapping(content);
             String property = propertiesMap.get("property");
@@ -126,7 +132,7 @@ public class SqlSourceBuilder extends BaseBuilder {
             }
             return builder.build();
         }
-
+        // 解析#{}中和的参数，提取出javaType jdbcType typeHandler等属性
         private Map<String, String> parseParameterMapping(String content) {
             try {
                 return new ParameterExpression(content);

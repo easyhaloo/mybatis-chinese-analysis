@@ -29,12 +29,14 @@ import org.apache.ibatis.reflection.ParamNameResolver;
 import org.apache.ibatis.session.Configuration;
 
 /**
+ *  SqlSource 提供者类 通过注解@SqlProvider来调用
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
 public class ProviderSqlSource implements SqlSource {
 
   private final Configuration configuration;
+  // SqlSource解析器
   private final SqlSourceBuilder sqlSourceParser;
   private final Class<?> providerType;
   private Method providerMethod;
