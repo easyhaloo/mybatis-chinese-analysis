@@ -110,25 +110,25 @@
     </contributors>
 
     <!--<scm>-->
-    <!--<url>http://github.com/mybatis/mybatis-3</url>-->
-    <!--<connection>scm:git:ssh://github.com/mybatis/mybatis-3.git</connection>-->
-    <!--<developerConnection>scm:git:ssh://git@github.com/mybatis/mybatis-3.git</developerConnection>-->
-    <!--<tag>HEAD</tag>-->
+        <!--<url>http://github.com/mybatis/mybatis-3</url>-->
+        <!--<connection>scm:git:ssh://github.com/mybatis/mybatis-3.git</connection>-->
+        <!--<developerConnection>scm:git:ssh://git@github.com/mybatis/mybatis-3.git</developerConnection>-->
+        <!--<tag>HEAD</tag>-->
     <!--</scm>-->
     <!--<issueManagement>-->
-    <!--<system>GitHub Issue Management</system>-->
-    <!--<url>https://github.com/mybatis/mybatis-3/issues</url>-->
+        <!--<system>GitHub Issue Management</system>-->
+        <!--<url>https://github.com/mybatis/mybatis-3/issues</url>-->
     <!--</issueManagement>-->
     <!--<ciManagement>-->
-    <!--<system>Travis CI</system>-->
-    <!--<url>https://travis-ci.org/mybatis/mybatis-3/</url>-->
+        <!--<system>Travis CI</system>-->
+        <!--<url>https://travis-ci.org/mybatis/mybatis-3/</url>-->
     <!--</ciManagement>-->
     <!--<distributionManagement>-->
-    <!--<site>-->
-    <!--<id>gh-pages</id>-->
-    <!--<name>Mybatis GitHub Pages</name>-->
-    <!--<url>git:ssh://git@github.com/mybatis/mybatis-3.git?gh-pages#</url>-->
-    <!--</site>-->
+        <!--<site>-->
+            <!--<id>gh-pages</id>-->
+            <!--<name>Mybatis GitHub Pages</name>-->
+            <!--<url>git:ssh://git@github.com/mybatis/mybatis-3.git?gh-pages#</url>-->
+        <!--</site>-->
     <!--</distributionManagement>-->
 
     <properties>
@@ -261,6 +261,12 @@
             <version>2.9</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -376,19 +382,22 @@
         <repository>
             <id>sonatype-oss-snapshots</id>
             <name>Sonatype OSS Snapshots Repository</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-
-        <repository>
-            <id> central</id>
-            <name> Maven Repository Switchboard</name>
-            <layout> default</layout>
-            <url> http://repo1.maven.org/maven2</url>
+            <url>https://oss.sonatype.org/content/repositories</url>
             <snapshots>
-                <enabled> false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
 
+
+        <repository>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <layout>default</layout>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
 

@@ -37,7 +37,7 @@ public interface Executor {
     ResultHandler NO_RESULT_HANDLER = null;
 
     /**
-     * 更新操作
+     * 更新操作或插入操作
      *
      * @param ms
      * @param parameter
