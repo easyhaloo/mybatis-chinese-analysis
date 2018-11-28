@@ -29,7 +29,8 @@ import org.apache.ibatis.reflection.ParamNameResolver;
 import org.apache.ibatis.session.Configuration;
 
 /**
- *  SqlSource 提供者类 通过注解@SqlProvider来调用
+ * SqlSource 提供者类 通过注解@SqlProvider来调用
+ *
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */
@@ -61,6 +62,7 @@ public class ProviderSqlSource implements SqlSource {
     try {
       this.configuration = configuration;
       this.sqlSourceParser = new SqlSourceBuilder(configuration);
+      //provider 代表传入的注解 @SelectProvider
       this.providerType = (Class<?>) provider.getClass().getMethod("type").invoke(provider);
       providerMethodName = (String) provider.getClass().getMethod("method").invoke(provider);
 
@@ -89,7 +91,7 @@ public class ProviderSqlSource implements SqlSource {
       Class<?> parameterType = this.providerMethodParameterTypes[i];
       if (parameterType == ProviderContext.class) {
         if (this.providerContext != null){
-          throw new BuilderException("Error creating SqlSource for SqlProvider. ProviderContext found multiple in SqlProvider method ("
+          throw new BuilderException("Error creating SqlSource for SqlProvider. ProviderContext k multiple in SqlProvider method ("
               + this.providerType.getName() + "." + providerMethod.getName()
               + "). ProviderContext can not define multiple in SqlProvider method argument.");
         }
@@ -105,10 +107,12 @@ public class ProviderSqlSource implements SqlSource {
     return sqlSource.getBoundSql(parameterObject);
   }
 
+  // 创建SqlSource对象 parameterObject表示要执行SQL的参数
   private SqlSource createSqlSource(Object parameterObject) {
     try {
       int bindParameterCount = providerMethodParameterTypes.length - (providerContext == null ? 0 : 1);
       String sql;
+      // 静态 statement SQL
       if (providerMethodParameterTypes.length == 0) {
         sql = invokeProviderMethod();
       } else if (bindParameterCount == 0) {

@@ -48,6 +48,8 @@ import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.TypeHandler;
 
 /**
+ *  配置文件xml解析
+ *
  * @author Clinton Begin
  * @author Kazuki Shimizu
  */

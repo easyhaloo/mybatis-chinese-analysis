@@ -26,9 +26,9 @@ import org.apache.ibatis.mapping.MappedStatement;
  * @author Clinton Begin
  */
 public interface KeyGenerator {
-
+    // sql语句执行之前，先生成主键，然后设置到参数对象
     void processBefore(Executor executor, MappedStatement ms, Statement stmt, Object parameter);
-
+    //  sql语句执行之后，再生成主键，然后设置到参数对象
     void processAfter(Executor executor, MappedStatement ms, Statement stmt, Object parameter);
 
 }
